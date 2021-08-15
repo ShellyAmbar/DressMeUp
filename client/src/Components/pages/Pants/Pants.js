@@ -3,8 +3,8 @@ import SearchItemView from "../../Views/SearchItemView/SearchItemView";
 
 function Pants() {
   const [pantsList, setPantsList] = useState([]);
-  const fetchData = async () => {
-    await fetch("http://www.mocky.io/v2/5e3940013200005e00ddf87e")
+  const fetchData = () => {
+    fetch("http://www.mocky.io/v2/5e3940013200005e00ddf87e")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -16,14 +16,17 @@ function Pants() {
           const filteredList = data.results.filter(
             (item) => item.type === "pants"
           );
-          setPantsList(filteredList);
+          if (pantsList.length === 0) {
+            setPantsList(filteredList);
+          }
+
           console.log("pantsList", filteredList);
         }
       })
       .catch((err) => console.log(err));
   };
   useEffect(() => {
-    fetchData();
+    return fetchData();
   }, []);
 
   return (

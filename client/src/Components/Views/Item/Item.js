@@ -1,15 +1,25 @@
 import React, { useState } from "react";
 import "./Item.css";
 import { Card, CardText, CardBody, CardTitle, CardSubtitle } from "reactstrap";
-import { Button } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 
 function Item(props) {
   const [isShowColors, setIsShowColors] = useState(true);
   const [isShowsizes, setIsShowSizes] = useState(false);
-  const handlePickColor = () => {
+  const [color, setColor] = useState(null);
+  const [size, setSize] = useState(null);
+  const [item, setItem] = useState(null);
+
+  const handlePickColor = (color) => {
+    setColor(color);
+
     setIsShowSizes(true);
   };
-  const handlePickSize = () => {};
+  const handlePickSize = (size) => {
+    setSize(size);
+    setItem(item);
+    props.handlePickedItem(color, size, props.item);
+  };
   return (
     <Card style={{ margin: "5px" }}>
       <CardBody>
@@ -20,63 +30,63 @@ function Item(props) {
         <CardText>
           {isShowColors && (
             <div className="colors">
-              <h2>Pick a color:</h2>
-              <ul>
-                {props.item.colors.map((color) => {
-                  return (
-                    <li>
-                      <Button
-                        onClick={handlePickColor}
-                        style={{
-                          backgroundColor: color,
-                          color: color === "white" ? "black" : "white",
-                        }}
-                      >
-                        {color}
-                      </Button>
-                    </li>
-                  );
-                })}
-              </ul>
+              <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  Pick a color:
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <ul>
+                    {props.item.colors.map((color) => {
+                      return (
+                        <li>
+                          <Dropdown.Item>
+                            <Button
+                              onClick={() => handlePickColor(color)}
+                              style={{
+                                backgroundColor: color,
+                                color: color === "white" ? "black" : "white",
+                              }}
+                            >
+                              {color}
+                            </Button>
+                          </Dropdown.Item>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
           )}
           {isShowsizes && (
             <div className="sizes">
-              <h2>Pick a size:</h2>
-              <ul>
-                {props.item.sizes.map((size) => {
-                  return (
-                    <li>
-                      <Button onClick={handlePickSize}>{size}</Button>
-                    </li>
-                  );
-                })}
-              </ul>
+              <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  Pick a size:
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <ul>
+                    {props.item.sizes.map((size, index) => {
+                      return (
+                        <li key={index}>
+                          <Dropdown.Item>
+                            <Button onClick={() => handlePickSize(size)}>
+                              {size}
+                            </Button>
+                          </Dropdown.Item>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
           )}
         </CardText>
       </CardBody>
     </Card>
-    // <div className="item-container">
-    //   <div className="item-content">
-    //     <h1>
-    //       `${props.item.name}, ${props.item.brand}`
-    //     </h1>
-    //     {isShowColors && (
-    //       <div>
-    //         <h2>Pick a color:</h2>
-
-    //       </div>
-    //     )}
-    //      {isShowsizes && (
-    //       <div>
-    //         <h2>Pick a size:</h2>
-
-    //       </div>
-    //     )}
-
-    //   </div>
-    // </div>
   );
 }
 

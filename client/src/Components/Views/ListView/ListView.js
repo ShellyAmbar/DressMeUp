@@ -22,13 +22,24 @@ function ListView(props) {
       {props.list && (
         <Container>
           <Row xs={3}>
-            {props.list.map((e, i) => {
-              return (
-                <Col>
-                  <Item id={i} item={e} />
-                </Col>
-              );
-            })}
+            {props.list
+              .sort(function (a, b) {
+                if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+                if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+                return 0;
+              })
+              .map((e, i) => {
+                return (
+                  <Col>
+                    <Item
+                      handlePickedItem={props.handlePickedItem}
+                      key={i}
+                      id={i}
+                      item={e}
+                    />
+                  </Col>
+                );
+              })}
           </Row>
         </Container>
       )}
