@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, observable } from "mobx";
+import { makeAutoObservable, observable, computed, makeObservable } from "mobx";
 
 class OutfitsStore {
   shirt = null;
@@ -11,6 +11,7 @@ class OutfitsStore {
   startTime = 0;
   endTime = 0;
   totalTime = 0;
+  sumOfPantsShoesSizes = 0;
 
   constructor() {
     makeAutoObservable(this);
@@ -21,6 +22,7 @@ class OutfitsStore {
       this.startTime = Date.now();
       this.totalTime = 0;
       this.endTime = 0;
+      this.sumOfPantsShoesSizes = 0;
     }
     switch (type) {
       case "shirt":
@@ -70,6 +72,7 @@ class OutfitsStore {
       this.endTime = Date.now();
       const ms = this.endTime - this.startTime;
       this.totalTime = ((ms % 60000) / 1000).toFixed(0);
+      this.sumOfPantsShoesSizes = this.pants.size + this.shoes.size;
 
       const newOutfit = { shirt, pants, shoes };
       this.allOutfits.push(newOutfit);
