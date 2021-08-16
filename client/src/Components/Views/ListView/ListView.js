@@ -30,7 +30,7 @@ function ListView(props) {
               })
               .map((e, i) => {
                 return (
-                  <Col>
+                  <Col key={i}>
                     <Item
                       handlePickedItem={props.handlePickedItem}
                       key={i}

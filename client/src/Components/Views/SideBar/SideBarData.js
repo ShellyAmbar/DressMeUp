@@ -29,10 +29,4 @@ export const SideBarData = [
     icon: <GiIcons.GiSonicShoes />,
     cName: "nav-text",
   },
-  {
-    title: "Success",
-    path: "/Success",
-    icon: <FiIcons.FiAward />,
-    cName: "nav-text",
-  },
 ];

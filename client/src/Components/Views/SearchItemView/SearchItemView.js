@@ -3,24 +3,28 @@ import ListView from "../ListView/ListView";
 import SearchBar from "../SearchBar/SearchBar";
 import "./SearchItemView.css";
 import { Modal, Button } from "react-bootstrap";
+import { observer } from "mobx-react";
+import ItemsStore from "../../../store/ItemsStore";
+import OutfitsStore from "../../../store/OutfitsStore";
+import { useHistory } from "react-router-dom";
 
 function SearchItemView(props) {
   const [originList, setOriginList] = useState(props.list ? props.list : []);
   let [filteredList, setfilteredList] = useState(props.list ? props.list : []);
+  const history = useHistory();
+
   const handleUpdateInput = (searchValue) => {
-    if (searchValue === "") {
-      // setfilteredList(originList);
-    }
-    const newList = originList.filter(
-      (item) =>
-        item.name.includes(searchValue) || item.brand.includes(searchValue)
-    );
+    const newList = ItemsStore.filterItemsByKey(props.list, searchValue);
     setfilteredList(newList);
-    console.log("originList", originList);
-    console.log("filteredList", filteredList);
   };
   const handlePickedItem = (color, size, item) => {
+    OutfitsStore.lastPickedItem = { item, size, color };
     setShow(true);
+  };
+  const handleAddItem = () => {
+    OutfitsStore.setItem(OutfitsStore.lastPickedItem);
+    handleClose();
+    history.push("./Home");
   };
   const [show, setShow] = useState(false);
 
@@ -41,7 +45,7 @@ function SearchItemView(props) {
           <Button variant="secondary" onClick={handleClose}>
             No
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleAddItem}>
             Yes
           </Button>
         </Modal.Footer>
@@ -50,4 +54,4 @@ function SearchItemView(props) {
   );
 }
 
-export default SearchItemView;
+export default observer(SearchItemView);
