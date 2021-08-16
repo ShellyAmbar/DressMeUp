@@ -16,9 +16,13 @@ function Item(props) {
     setIsShowSizes(true);
   };
   const handlePickSize = (size) => {
-    setSize(size);
-    setItem(item);
-    props.handlePickedItem(color, size, props.item);
+    props.handlePickedItem(
+      color,
+      size,
+      props.item.type,
+      props.item.name,
+      props.item.brand
+    );
   };
   return (
     <Card style={{ margin: "5px" }}>

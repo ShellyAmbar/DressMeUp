@@ -2,8 +2,10 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import Table from "../../Views/Table/Table";
 import { useHistory } from "react-router-dom";
+import { observer } from "mobx-react";
+import outfitsStore from "../../../store/OutfitsStore";
 
-function Success() {
+const Success = () => {
   const history = useHistory();
   const handleBackHome = () => {
     history.push("./Home");
@@ -15,6 +17,7 @@ function Success() {
     <div className="page-container">
       <div className="page-content-container">
         <h1>Success!</h1>
+        <h2>{`Total time (seconds): ${outfitsStore.totalTime}`}</h2>
         <img
           src={`./images/${getRandomInt(4)}.jpg`}
           style={{ width: "200px", height: "200px" }}
@@ -26,6 +29,6 @@ function Success() {
       </div>
     </div>
   );
-}
+};
 
-export default Success;
+export default observer(Success);

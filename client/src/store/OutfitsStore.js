@@ -7,23 +7,32 @@ class OutfitsStore {
   lastPickedItem = null;
   allOutfits = [];
   curentStatus = 0;
+  allItemsOfSets = [];
+  startTime = 0;
+  endTime = 0;
+  totalTime = 0;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setItem({ item, size, color }) {
-    switch (item.type) {
+  setItem({ type, name, brand, size, color }) {
+    if (!this.shirt && !this.pants && !this.shoes) {
+      this.startTime = Date.now();
+      this.totalTime = 0;
+      this.endTime = 0;
+    }
+    switch (type) {
       case "shirt":
-        this.setShirt({ item, size, color });
+        this.setShirt({ type, name, brand, size, color });
 
         break;
       case "pants":
-        this.setPants({ item, size, color });
+        this.setPants({ type, name, brand, size, color });
 
         break;
       case "shoes":
-        this.setShoes({ item, size, color });
+        this.setShoes({ type, name, brand, size, color });
 
         break;
       default:
@@ -31,25 +40,25 @@ class OutfitsStore {
     }
   }
 
-  setShirt({ item, size, color }) {
+  setShirt({ type, name, brand, size, color }) {
     if (!this.shirt) {
       this.curentStatus += 1;
     }
-    this.shirt = { item, size, color };
+    this.shirt = { type, name, brand, size, color };
     this.lastPickedItem = null;
   }
-  setPants({ item, size, color }) {
+  setPants({ type, name, brand, size, color }) {
     if (!this.pants) {
       this.curentStatus += 1;
     }
-    this.pants = { item, size, color };
+    this.pants = { type, name, brand, size, color };
     this.lastPickedItem = null;
   }
-  setShoes({ item, size, color }) {
+  setShoes({ type, name, brand, size, color }) {
     if (!this.shoes) {
       this.curentStatus += 1;
     }
-    this.shoes = { item, size, color };
+    this.shoes = { type, name, brand, size, color };
     this.lastPickedItem = null;
   }
 
@@ -58,14 +67,29 @@ class OutfitsStore {
       const shirt = this.shirt;
       const pants = this.pants;
       const shoes = this.shoes;
+      this.endTime = Date.now();
+      const ms = this.endTime - this.startTime;
+      this.totalTime = ((ms % 60000) / 1000).toFixed(0);
 
       const newOutfit = { shirt, pants, shoes };
       this.allOutfits.push(newOutfit);
+      this.allItemsOfSets.push(shirt);
+      this.allItemsOfSets.push(pants);
+      this.allItemsOfSets.push(shoes);
+
       this.shirt = null;
       this.pants = null;
       this.shoes = null;
       this.curentStatus = 0;
     }
+  }
+
+  getAllOutfits() {
+    return this.allOutfits;
+  }
+
+  getAllPickedItemsOfSets() {
+    return this.allItemsOfSets;
   }
 }
 

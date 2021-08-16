@@ -17,8 +17,8 @@ function SearchItemView(props) {
     const newList = ItemsStore.filterItemsByKey(props.list, searchValue);
     setfilteredList(newList);
   };
-  const handlePickedItem = (color, size, item) => {
-    OutfitsStore.lastPickedItem = { item, size, color };
+  const handlePickedItem = (color, size, type, name, brand) => {
+    OutfitsStore.lastPickedItem = { type, name, brand, size, color };
     setShow(true);
   };
   const handleAddItem = () => {
