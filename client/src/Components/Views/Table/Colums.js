@@ -19,8 +19,4 @@ export const COLUMNS = [
     Header: "Size",
     accessor: "size",
   },
-  {
-    Header: "Time to pick",
-    accessor: "time",
-  },
 ];
